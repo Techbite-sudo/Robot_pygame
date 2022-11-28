@@ -6,7 +6,6 @@ from pygame import mixer
 pygame.init()
 clock = pygame.time.Clock()
 
-
 # button class
 class Button():
     def __init__(self, x, y, image, scale):
@@ -29,9 +28,10 @@ class Button():
 
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
-
         # draw button on screen
         surface.blit(self.image, (self.rect.x, self.rect.y))
+
+
 
         return action
 
@@ -114,11 +114,10 @@ bg = pygame.image.load("images/bg.webp").convert_alpha()
 # create button instances, player instances and groups
 player = Player(300, 250)
 animate_button = Button(350, 5, animate_img, 0.5)
+
 moving_sprites = pygame.sprite.Group()
 moving_sprites.add(player)
-
 fps = 0.15
-
 # Background sound
 mixer.music.load('audio/Robot-Songs-Robot-says.wav')
 mixer.music.play(-1)
@@ -128,21 +127,28 @@ run = True
 while run:
     # screen.fill((0, 0, 0))
 
-    if animate_button.draw(screen):
-        player.animate()
+    # if animate_button.draw(screen):
+    #     print("Clicked")
+    #     player.animate()
     # event handler
     for event in pygame.event.get():
         # quit game
         if event.type == pygame.QUIT:
             run = False
-
+        if event.type == pygame.KEYDOWN:
+            player.animate()
     # Drawing
-    screen.fill([255, 255, 255])
-    screen.blit(pygame.transform.smoothscale(bg, (848, 477)), (0, 0))
 
+    screen.fill([255, 255, 255])
+
+    screen.blit(pygame.transform.smoothscale(bg, (848, 477)), (0, 0))
     moving_sprites.draw(screen)
+
+    if animate_button.draw(screen):
+        player.animate()
     # animate_button.draw(screen)
     pygame.display.update()
     moving_sprites.update(fps)
+
     pygame.display.flip()
     clock.tick(60)
