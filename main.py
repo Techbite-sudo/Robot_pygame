@@ -1,5 +1,4 @@
 import pygame
-import sys
 from pygame import mixer
 
 # General setup
@@ -7,11 +6,12 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # button class
+
+
 class Button():
     def __init__(self, x, y, image, scale):
-        widthbtn = image.get_width()
-        heightbtn = image.get_height()
-        self.image = pygame.transform.scale(image, (int(widthbtn * scale), int(heightbtn * scale)))
+        self.image = pygame.transform.scale(
+            image, (int(image.get_width() * scale), int(image.get_height() * scale)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
@@ -30,15 +30,11 @@ class Button():
             self.clicked = False
         # draw button on screen
         surface.blit(self.image, (self.rect.x, self.rect.y))
-
-
-
         return action
 
 
 def zoom(path, sizeX):
     return pygame.transform.smoothscale(pygame.image.load(path), (sizeX / 2, 130))
-
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
@@ -120,17 +116,12 @@ moving_sprites.add(player)
 fps = 0.15
 # Background sound
 mixer.music.load('audio/Robot-Songs-Robot-says.wav')
+mixer.music.set_volume(0.1)
 mixer.music.play(-1)
 
 # game loop
 run = True
 while run:
-    # screen.fill((0, 0, 0))
-
-    # if animate_button.draw(screen):
-    #     print("Clicked")
-    #     player.animate()
-    # event handler
     for event in pygame.event.get():
         # quit game
         if event.type == pygame.QUIT:
@@ -138,15 +129,13 @@ while run:
         if event.type == pygame.KEYDOWN:
             player.animate()
     # Drawing
-
     screen.fill([255, 255, 255])
-
     screen.blit(pygame.transform.smoothscale(bg, (848, 477)), (0, 0))
     moving_sprites.draw(screen)
 
     if animate_button.draw(screen):
         player.animate()
-    # animate_button.draw(screen)
+        
     pygame.display.update()
     moving_sprites.update(fps)
 
